@@ -1,6 +1,6 @@
 type Query {
-  readBook(readerId: ID!, bookId: ID!): Int!
-  # checkoutBook(memberId: ID!, bookId: ID!): Int!
-  # checkinBook(librarianId: ID!, bookId: ID!): Int!
-  # removeBook(librarianId: ID!, bookId: ID!): Int!
+  readBook(userId: ID!, bookId: ID!): Int!
+  checkoutBook(userId: ID!, bookId: ID!): Int!
+  checkinBook(userId: ID!, bookId: ID!): Int!
+  removeBook(userId: ID!, bookId: ID!): Int!
 }
