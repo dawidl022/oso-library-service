@@ -3,10 +3,11 @@ package resolvers
 import (
 	"net/http"
 
-	"github.com/dawidl022/oso-library-service/models"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/osohq/go-oso"
 	"gorm.io/gorm"
+
+	"github.com/dawidl022/oso-library-service/models"
 )
 
 type BookMutation struct {
@@ -16,12 +17,16 @@ type BookMutation struct {
 
 func (b *BookMutation) getUser(userId graphql.ID) models.User {
 	return models.User{
-		Role: "librarian",
+		Role:    "member",
+		Regions: []string{"Madrid", "London"},
 	}
 }
 
 func (b *BookMutation) getBook(userId graphql.ID) models.Book {
-	return models.Book{}
+	return models.Book{
+		GloballyAvailable: false,
+		Regions:           []string{"London", "Amsterdam"},
+	}
 }
 
 func (b *BookMutation) getUserAndBookModels(args bookMutationArgs) (*models.User, *models.Book) {

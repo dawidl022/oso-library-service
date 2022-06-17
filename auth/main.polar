@@ -13,8 +13,10 @@ resource Book {
     "reader" if "member";
 }
 
-has_role(actor: User, role_name: String, _: Book) if
-    role_name = actor.Role;
+has_role(actor: User, role_name: String, book: Book) if
+    role_name = actor.Role and (
+        book.GloballyAvailable or (reg in book.Regions and reg in actor.Regions)
+    );
 
 allow(actor, action, resource) if
     has_permission(actor, action, resource);
