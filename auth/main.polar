@@ -1,8 +1,8 @@
-actor User{}
+actor User {}
 
 resource Book {
     roles = ["reader", "member", "librarian"];
-    permissions =  ["read", "checkout", "checkin", "remove"];
+    permissions = ["read", "checkout", "checkin", "remove"];
 
     "read" if "reader";
     "checkout" if "member";
@@ -12,6 +12,9 @@ resource Book {
     "member" if "librarian";
     "reader" if "member";
 }
+
+has_role(actor: User, role_name: String, _: Book) if
+    role_name = actor.Role;
 
 allow(actor, action, resource) if
     has_permission(actor, action, resource);

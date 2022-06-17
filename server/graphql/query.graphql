@@ -1,0 +1,6 @@
+type Query {
+  readBook(readerId: ID!, bookId: ID!): Int!
+  # checkoutBook(memberId: ID!, bookId: ID!): Int!
+  # checkinBook(librarianId: ID!, bookId: ID!): Int!
+  # removeBook(librarianId: ID!, bookId: ID!): Int!
+}
