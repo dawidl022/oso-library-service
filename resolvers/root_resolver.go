@@ -5,15 +5,12 @@ import (
 	"gorm.io/gorm"
 )
 
-type RootResolver struct {
-	*BookMutation
+type rootResolver struct {
+	*bookResolver
 }
 
-func NewRootResolver(db *gorm.DB, oso *oso.Oso) *RootResolver {
-	return &RootResolver{
-		BookMutation: &BookMutation{
-			db:  db,
-			oso: oso,
-		},
+func NewRootResolver(db *gorm.DB, oso *oso.Oso) *rootResolver {
+	return &rootResolver{
+		newBookResolver(db, oso),
 	}
 }

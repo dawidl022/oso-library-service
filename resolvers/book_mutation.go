@@ -10,32 +10,25 @@ import (
 	"github.com/dawidl022/oso-library-service/models"
 )
 
-type BookMutation struct {
+type bookMutation struct {
 	db  *gorm.DB
 	oso *oso.Oso
 }
 
-func (b *BookMutation) getUser(userId graphql.ID) models.User {
-	return models.User{
-		Role:    "member",
-		Regions: []string{"Madrid", "London"},
+func newBookMutation(db *gorm.DB, oso *oso.Oso) *bookMutation {
+	return &bookMutation{
+		db:  db,
+		oso: oso,
 	}
 }
 
-func (b *BookMutation) getBook(userId graphql.ID) models.Book {
-	return models.Book{
-		GloballyAvailable: false,
-		Regions:           []string{"London", "Amsterdam"},
-	}
-}
-
-func (b *BookMutation) getUserAndBookModels(args bookMutationArgs) (*models.User, *models.Book) {
-	user := b.getUser(args.UserId)
-	book := b.getBook(args.BookId)
+func (b *bookMutation) getUserAndBookModels(args bookMutationArgs) (*models.User, *models.Book) {
+	user := getUser(args.UserId)
+	book := getBook(args.BookId)
 	return &user, &book
 }
 
-func (b *BookMutation) getAuthzHttpStatusCode(args bookMutationArgs, permission string) int32 {
+func (b *bookMutation) getAuthzHttpStatusCode(args bookMutationArgs, permission string) int32 {
 	user, book := b.getUserAndBookModels(args)
 	err := b.oso.Authorize(user, permission, book)
 	if err != nil {
@@ -49,18 +42,18 @@ type bookMutationArgs struct {
 	BookId graphql.ID
 }
 
-func (b *BookMutation) ReadBook(args bookMutationArgs) int32 {
+func (b *bookMutation) ReadBook(args bookMutationArgs) int32 {
 	return b.getAuthzHttpStatusCode(args, "read")
 }
 
-func (b *BookMutation) CheckoutBook(args bookMutationArgs) int32 {
+func (b *bookMutation) CheckoutBook(args bookMutationArgs) int32 {
 	return b.getAuthzHttpStatusCode(args, "checkout")
 }
 
-func (b *BookMutation) CheckinBook(args bookMutationArgs) int32 {
+func (b *bookMutation) CheckinBook(args bookMutationArgs) int32 {
 	return b.getAuthzHttpStatusCode(args, "checkin")
 }
 
-func (b *BookMutation) RemoveBook(args bookMutationArgs) int32 {
+func (b *bookMutation) RemoveBook(args bookMutationArgs) int32 {
 	return b.getAuthzHttpStatusCode(args, "remove")
 }

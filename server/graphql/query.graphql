@@ -1,6 +1,16 @@
 type Query {
+  availableBooks(userId: ID!): [Book!]!
+}
+
+type Mutation {
   readBook(userId: ID!, bookId: ID!): Int!
   checkoutBook(userId: ID!, bookId: ID!): Int!
   checkinBook(userId: ID!, bookId: ID!): Int!
   removeBook(userId: ID!, bookId: ID!): Int!
+}
+
+type Book {
+  title: String!
+  globallyAvailable: Boolean!
+  regions: [String!]!
 }
